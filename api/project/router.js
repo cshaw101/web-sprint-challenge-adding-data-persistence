@@ -3,10 +3,13 @@ const router = require('express').Router()
 const Project = require('./model')
 
 router.get('/', (req, res, next) => {
-   const message =  res.json('its working')
+   const message =  res.json('project router is working')
    return message;
 })
 
+router.post('/', (req, res, next) => {
+    return res.json('Project Post is working properly')
+})
 
 
 
