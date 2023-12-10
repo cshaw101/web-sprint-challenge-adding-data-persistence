@@ -2,7 +2,7 @@
 
 const express = require('express');
 const projectModel = require('./model');
-const taskModel = require('../task/model'); // Check this line
+const taskModel = require('../task/model');
 
 const router = express.Router();
 
@@ -23,6 +23,8 @@ router.get('/', async (req, res, next) => {
             task_description: task.task_description,
             task_notes: task.task_notes,
             task_completed: !!task.task_completed,
+            project_name: project.project_name,
+            project_description: project.project_description, 
           })),
         };
       })

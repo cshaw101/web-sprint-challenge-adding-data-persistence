@@ -1,18 +1,29 @@
-// api/task/router.js
 
 const express = require('express');
 const taskModel = require('./model');
+const projectModel = require('../project/model'); 
 
 const router = express.Router();
 
 router.get('/', async (req, res, next) => {
   try {
     const tasks = await taskModel.getTasks();
-    const formattedTasks = tasks.map((task) => {
-      task.task_completed = !!task.task_completed;
-      return task;
-    });
-    res.status(200).json(formattedTasks);
+
+    const tasksWithDetails = await Promise.all(
+      tasks.map(async (task) => {
+        const project = await projectModel.getProjectById(task.project_id);
+        return {
+          task_id: task.task_id,
+          task_description: task.task_description,
+          task_notes: task.task_notes,
+          task_completed: !!task.task_completed,
+          project_name: project.project_name, 
+          project_description: project.project_description, 
+        };
+      })
+    );
+
+    res.status(200).json(tasksWithDetails);
   } catch (error) {
     next(error);
   }
