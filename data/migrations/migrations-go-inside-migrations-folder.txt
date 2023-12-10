@@ -1,1 +1,17 @@
-Use the `data/migrations` folder to keep your migration(s) as per your knexfile
+next step is to add the tables for each and use there PK and FK 
+
+3 tables 
+- resource
+- project
+- task
+
+
+
+A resource assignment is a record in the project_resources table that establishes a connection between a specific resource and a particular project. It serves to associate a resource with the project it is allocated to or utilized for. The project_resources table would likely include the following columns:
+
+    assignment_id - primary key for the resource assignment
+    project_id - foreign key referencing the project_id in the projects table, indicating the project to which the resource is assigned
+    resource_id - foreign key referencing the resource_id in the resources table, identifying the resource that is assigned to the project
+    Other relevant columns: These could include additional information such as the quantity of the resource assigned, the start and end dates of the assignment, or any other details specific to the relationship between the resource and the project.
+
+This structure allows for the effective management of resources associated with various projects, enabling the tracking and organization of project-related resources in a relational database.
