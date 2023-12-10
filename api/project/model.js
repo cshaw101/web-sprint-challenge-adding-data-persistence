@@ -1,9 +1,16 @@
-// build your `Project` model here
-const db = require('../../data/dbConfig')
 
-async function getProjectById(project_id) {
 
+const db = require('../../data/dbConfig');
+
+function getProjects() {
+  return db('projects');
 }
 
+function addProject(project) {
+  return db('projects').insert(project).returning('*');
+}
 
-module.exports = { getProjectById }
+module.exports = {
+  getProjects,
+  addProject,
+};

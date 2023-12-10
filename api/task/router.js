@@ -1,25 +1,32 @@
-// build your `/api/tasks` router here
-const router = require('express').Router()
-const Task = require('../task/model')
+// api/task/router.js
 
-router.get('/', (req, res, next) => {
-   const message =  res.json('task router is working')
-   return message;
-})
+const express = require('express');
+const taskModel = require('./model');
 
-router.post('/', (req, res, next) => {
-    return res.json('task Post is working properly')
-})
+const router = express.Router();
 
+router.get('/', async (req, res, next) => {
+  try {
+    const tasks = await taskModel.getTasks();
+    const formattedTasks = tasks.map((task) => {
+      task.task_completed = !!task.task_completed;
+      return task;
+    });
+    res.status(200).json(formattedTasks);
+  } catch (error) {
+    next(error);
+  }
+});
 
+router.post('/', async (req, res, next) => {
+  try {
+    const newTask = req.body;
+    const task = await taskModel.addTask(newTask);
+    task[0].task_completed = !!task[0].task_completed;
+    res.status(201).json(task[0]);
+  } catch (error) {
+    next(error);
+  }
+});
 
-
-router.use((err, req, res, next) => { // eslint-disable-line
-    res.status(500).json({
-        customMessage: 'something went wrong inside the project router',
-        message: err.message,
-        stack: err.stack,
-    })
-})
-
-module.exports = router
+module.exports = router;
